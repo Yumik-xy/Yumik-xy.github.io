@@ -73,23 +73,19 @@ function endPointDetect = calEndPointDetect(energy,zeroCrossingRate)
 energyAvg = sum(energy)/length(energy);
 energy5sum = sum(energy(1:5));
 
-emptyLen = 8; % 一个词中间允许的空白间隔，防止颤音导致将一个词变成两个词
-			 % 如“你~”被分割为“你你”
-
+emptyLen = 8; % 一个词中间允许的空白间隔，防止颤音导致将一个词变成两个词 如“你~”被分割为“你你”
 ML = energy5sum / 5; % 取前五个值，一般录制时开头即噪声部分
 MH = energyAvg / 4; % 取平均能量的1/4
 ML = (ML+MH) / 4; % 再取最高和最低和的1/4，以更好的去除噪声信号
 if ML > MH % 防止开头即为语音信号时 ML>MH 的情况
     ML = MH / 4;
 end
-
 zeroC5sum = sum(zeroCrossingRate(1:5));
 Zs = zeroC5sum / 5; % 取白噪声的频率的1/5认为是人声频率
 
 checkA = []; % 第一步提出的必定为人声部分
 checkB = []; % 第二布扩展伸范围，提高精度
 checkC = []; % 辅助判决
-
 flag = 0;
 for i = 1:length(energy) % 找到满足MH开始和结尾数组对，即峰值的开始和结束坐标
     if isempty(checkA) && ~flag && energy(i) > MH % 寻找到开始 flag = 1
@@ -144,38 +140,27 @@ for j = 1:length(checkB) % 拓展，数组第一个值往左，第二个值往�
         checkC = [checkC;i];
     end
 end
-
 endPointDetect = checkC;
-
 end
 ```
 
 #### 提取声音
 
-提取声音信号，将区间包含部分标识为1，不包含部分标识为0，和原始数据点乘即可。该方法同样避免了端点区间重复时，带来的波形异常问题，例如：$[1,10,3,12]$即会把$[1,12]$的部分帧标识，避免了老方法带来的异常错误。
+提取声音信号，加入了去重部分，有可能在MH寻找峰值后进行ML延拓时，可能会产生两个一致的区间，导致信号被翻倍，使得单字“A”被解成双字“AA”导致计算出现误差。
 
 ```matlab
 function endPointFitter = calEndPointFitter(data,endPointDetect)
+% 去重
+endPointDetect = reshape(endPointDetect,2,[])';
+endPointDetect = unique(endPointDetect,'rows')';
+endPointDetect = reshape(endPointDetect,1,[]);
 frame = 256;
-endPointFitter = zeros(len(data),1);
-m = 1;
-while m < length(endPointDetect)
-    endPointFitter(endPointDetect(m)*frame,endPointDetect(m+1)*frame) = 1;
-    m = m + 2;
-end
-endPointFitter = endPointFitter.*data;
-end
-```
-
-改进前的错误方法：（造成波段重复）
-
-```matlab
- % ......
 endPointFitter = [];
 m = 1;
 while m < length(endPointDetect)
     endPointFitter = [endPointFitter;data(endPointDetect(m)*frame:endPointDetect(m+1)*frame)];
     m = m + 2;
+end
 end
 ```
 
