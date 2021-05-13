@@ -149,7 +149,9 @@
       {%- endif -%}
       <p class="about-footer {{condensed_class}}">&copy;
         {{ "now" | date: "%Y" }}
-	  <span id="busuanzi_container_site_pv">蜗蜗被访问<span id="busuanzi_value_site_pv"></span>次啦</span>
+	  <span id="busuanzi_container_site_pv" style='display:none'>
+	  蜗蜗被访问<span id="busuanzi_value_site_pv"></span>次啦
+	  </span>
 		</p>
       {%- if site.plainwhite.dark_mode -%}
       <div class="about-footer {{condensed_class}}">
