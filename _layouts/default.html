@@ -147,7 +147,9 @@
       </nav>
       {%- endif -%}
       <p class="about-footer {{condensed_class}}">&copy;
-        {{ "now" | date: "%Y" }}</p>
+        {{ "now" | date: "%Y" }}
+	  <span id="busuanzi_container_site_pv">蜗蜗被访问<span id="busuanzi_value_site_pv"></span>次啦</span>
+		</p>
       {%- if site.plainwhite.dark_mode -%}
       <div class="about-footer {{condensed_class}}">
         <p>Dark Mode
@@ -189,7 +191,6 @@
   {% endif %}
   
   <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  <span id="busuanzi_container_site_pv">蜗蜗有<span id="busuanzi_value_site_pv"></span>次访问啦</span>
 </body>
 
 </html>
