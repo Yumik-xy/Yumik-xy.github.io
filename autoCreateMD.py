@@ -158,13 +158,13 @@ class Create_newMD:
             self.contentlist.append("")
             self.contentlist.append("* content")
             self.contentlist.append("{:toc}")
-            self.contentlist.append("")
+            self.contentlist.append("导言：")
             self.contentlist.append("")
             # 这里多写一个注释将日期、时间和图片尺寸组合成图片的名字，方便传图的时候用到
             # <!-- ![]({{ '/styles/article-image/20190301153016_1.jpg' | prepend: site.baseurl  }}) -->
-            before = "<!-- ![]({{ '/styles/article-image/"
-            after = input_date.replace("-","") + input_time.replace(":","")+"_1.jpg' | prepend: site.baseurl }}){:height='80%' width='80%'} -->"
-            self.contentlist.append(before + after)
+            # before = "<!-- ![]({{ '/styles/article-image/"
+            # after = input_date.replace("-","") + input_time.replace(":","")+"_1.jpg' | prepend: site.baseurl }}){:height='80%' width='80%'} -->"
+            self.contentlist.append("<!-- ![](https://latex.codecogs.com/gif.latex?) -->")
             char_list = ['*','|',':','?','/','<','>','"','\\']
             while True:
                 # 创建文件的时候，名字不能包含一些特殊字符要转义

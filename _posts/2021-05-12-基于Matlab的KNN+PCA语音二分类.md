@@ -8,10 +8,7 @@ tag: MATLAB语音识别
 
 * content
 {:toc}
-
 KNN+PCA实现电力系统正常/故障二分类处理
-
-<!-- ![]({{ '/styles/article-image/20210512230647_1.jpg' | prepend: site.baseurl }}){:height='80%' width='80%'} -->
 
 ### PCA简要介绍
 
@@ -37,7 +34,7 @@ KNN称“K邻近算法”，主要用于判据数据属于哪一分类
 
 #### 读入训练集数据和训练集标签
 
-读取训练目录所有的声音数据和标签，由于提供的标签为$[1,2]$分布的值，故这里将其转化为$[-1,1]$分布便于进行二分类判决
+读取训练目录所有的声音数据和标签，由于提供的标签为[1,2]​分布的值，故这里将其转化为​[-1,1]分布便于进行二分类判决
 
 ```matlab
 train_wav_path_list = dir(strcat(train_path,'*.wav')); % 读取所有 wav 文件
@@ -64,9 +61,9 @@ end
 注意到函数`feature_selection(wav)`即为特征值选择函数。
 
 函数首先对所有数据进行归一化操作，将数据进行0点对齐使得所有数据和为0，这样是为了更好的做PCA运算，归一化公式为
-$$
-x^*=\frac{x-\mu}{\sigma}
-$$
+
+![](https://latex.codecogs.com/gif.latex?x^*=\frac{x-\mu}{\sigma})
+
 函数如下：
 
 ```matlab
@@ -78,9 +75,9 @@ end
 ```
 
 进行归一化后将8000bit语音信号进行分帧，分帧数通过公式
-$$
-fn=\frac{N-wlen}{inc}/+1
-$$
+
+![](https://latex.codecogs.com/gif.latex?fn=\frac{N-wlen}{inc}/+1)
+
 进行计算。取分帧长度为800帧，帧移为400，计算可得需要分成19帧，帧与帧之间通过Hamming码进行连接，分帧函数如下：
 
 ```matlab
@@ -134,15 +131,107 @@ end
 
 #### 读入测试集数据和测试集标签
 
-测试集的处理方式与训练集完全一致，这里不再过多赘述。若训练集较大，可以将训练得到的特征值变量写入为*.mat*文件进行保存，方便后期调用。
+测试集的处理方式与训练集完全一致，这里不再过多赘述。
+
+若训练集或测试集较大，可以将预先提取得到的特征值变量写入为*.mat*文件进行保存，方便后期调用。
+
+#### 计算特征值的特征向量
+
+<!-- ![](https://latex.codecogs.com/gif.latex?) -->
+
+得到训练集的特征向量数组后，经过PCA算法进行降维，将9维数据降成1维数据，计算步骤如下：
+
+1. 对协方差矩阵![](https://latex.codecogs.com/gif.latex?\Sigma_X)写出行列式：![](https://latex.codecogs.com/gif.latex?|\Sigma_x-\lambda E|)
+
+2. 令![](https://latex.codecogs.com/gif.latex?|\Sigma_x-\lambda E|=0)，得到的![](https://latex.codecogs.com/gif.latex?\lambda_1),![](https://latex.codecogs.com/gif.latex?\lambda_2)...![](https://latex.codecogs.com/gif.latex?\lambda_n)就是协方差矩阵![](https://latex.codecogs.com/gif.latex?\Sigma_x)的特征值
+
+3. 将![](https://latex.codecogs.com/gif.latex?\lambda=\lambda_i)带入![](https://latex.codecogs.com/gif.latex?|\Sigma_x-\lambda E|=0)，解出的基础解系![](https://latex.codecogs.com/gif.latex?v_1),![](https://latex.codecogs.com/gif.latex?v_2)...![](https://latex.codecogs.com/gif.latex?v_n)就是协方差矩阵![](https://latex.codecogs.com/gif.latex?\Sigma_x)就是该特征值对应的特征向量。
+
+```matlab
+function [principal_eigenvector, i] = principal_eigenvector(data,mu)
+    [row, ~] = size(data);
+    mean_data = mean(data);
+    ajust_data = data - repmat(mean_data,row,1);
+    ajust_data = ajust_data';
+    cov_data = ajust_data*ajust_data'/(size(ajust_data,1)-1);
+        
+    [v, d] = eig(cov_data);
+    v_sort = zeros(size(v));
+    [m, n] = sort(diag(d),'descend');
+    
+    for i = 1:row % 按从大到小的顺序构建d，重新排序v
+        v_sort(:,i) = v(:,n(i));
+    end
+    
+    for i = 1:row
+        if sum(m(1:i))/sum(m) > mu
+            break;
+        end
+    end
+    principal_eigenvector = v_sort(:,1:i);
+end
+```
 
 #### 进行KNN邻近算法，求解测试集分类
 
+由KNN邻近算法的定义可知，现在需要找n个距离目标节点最近的点，根据其包含的正常/异常类的数量推导出目标节点的类型。
 
+上一步我们先求出了归一化直线的特征向量，我们现在可以求解出训练集和测试集每一点到该向量方向的投影坐标，通过坐标值计算出即可计算测试集的某个点到所有训练集点的距离，找出距离最小的n个点，和这n个点的数据类型即可判决该点属于哪一类。
 
-#### 计算测试集和训练集二者2l-范数距离
+本次实验去knn的n值为3，当求解diff大于1时，判决为异常类；小于1时判决为正常类，这是由于我们预先对数据标签进行了[-1,1]的处理，即正常用-1表示，异常用1表示，只要求解出几个点的标签和，即可知道其距离内包含的哪种类型的点更多。
 
-#### 取最小的k个值，判断正常/异常组
+```matlab
+knn = 3;
 
-#### 计算错误率
+[train_vector, k] = principal_eigenvector(train_selection_wav,mu(mu_i));
+train_selection_mean = mean(train_selection_wav); % 归0化训练集
+train_len = (train_selection_wav - repmat(train_selection_mean,train_wav_length,1)) * train_vector; % 求训练集矢量
 
+test_selection_mean = mean(train_selection_wav);
+test_len = (test_selection_wav - repmat(test_selection_mean,test_wav_length,1)) * train_vector; % 求测试集矢量
+    
+diff = zeros(test_wav_length,1); % 计算第k个目标节点的差异值
+for i = 1:test_wav_length
+    test_wav = test_len(i);
+    dvalue_len = abs(train_len-repmat(test_len(i),train_wav_length,1)); % 计算距离最小的值
+    [svalue_len,n] = sort(dvalue_len);
+    for j = 1:knn
+        diff(i) = diff(i) + train_lable(n(j));
+    end
+    if diff(i)*test_lable(i)<0
+        ['第' num2str(i) '出现错误']
+    end
+end
+err = sum(diff.*test_lable'<0);
+errP = err/test_wav_length;
+out = ['当mu=' num2str(mu(mu_i)) '，k=' num2str(k) '时，错误率为：' num2str(errP*100) '%']
+
+```
+
+#### 实验结果分析
+
+判决结果如下：
+
+```matlab
+out = '当mu=0.5，k=1时，错误率为：0%'
+out = '当mu=0.55，k=1时，错误率为：0%'
+out = '当mu=0.6，k=1时，错误率为：0%'
+out = '当mu=0.65，k=1时，错误率为：0%'
+out = '当mu=0.7，k=1时，错误率为：0%'
+out = '当mu=0.75，k=2时，错误率为：0%'
+out = '当mu=0.8，k=2时，错误率为：0%'
+out = '当mu=0.85，k=2时，错误率为：0%'
+out = '当mu=0.9，k=2时，错误率为：0%'
+out = '当mu=0.95，k=7时，错误率为：0%'
+out = '当mu=1，k=128时，错误率为：0%'
+```
+
+μ和k的关系如下图，不难看出当k取1时，μ值已经达到0.7~0.75之间，这是由于特征值向量中有一向量占比很大，其体现了数据的**主要判决准则**
+
+![image-20210513082417477](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210513082417.png)
+
+下图给出了训练集和测试集在不同μ的取值下，所展现的投影长度分布如下，红色部分为需要警告的部分，可以看出其被较好的分离出来
+
+![image-20210513082543621](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210513082543.png)
+
+![image-20210513082549545](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210513082549.png)
