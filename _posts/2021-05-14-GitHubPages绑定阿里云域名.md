@@ -8,6 +8,7 @@ tag: GitHub
 
 * content
 {:toc}
-导言：
+配置GitHub Pages的自定义域名，并绑定到阿里云域名
 
 <!-- ![](https://latex.codecogs.com/gif.latex?) -->
+
