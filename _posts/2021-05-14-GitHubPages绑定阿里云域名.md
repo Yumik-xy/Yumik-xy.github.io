@@ -75,7 +75,9 @@ tag:
 
 点击下一步，在验证信息中获取到了如下信息
 
-![image-20210515140419808](C:/Users/lz_hu/AppData/Roaming/Typora/typora-user-images/image-20210515140419808.png)
+![image-20210515140419808](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210515140419.png)
+
+
 
 回到之前的`域名解析页面`选择添加记录，并按上图配置自己的信息
 
