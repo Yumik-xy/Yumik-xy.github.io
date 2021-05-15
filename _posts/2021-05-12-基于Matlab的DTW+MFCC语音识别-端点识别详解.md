@@ -16,7 +16,7 @@ tag: MATLAB语音识别
 
 不考虑模型的实际架构，我们对于一个录制的语音信号
 
-<img src="https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210512143932.png" alt="image-20210512143931597" style="zoom:67%;" />
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515230906.png" alt="image-20210512143931597" style="zoom:67%;" />
 
 其存在不包含任何信息的[0]段空腔和人呼吸或环境产生的噪声。在语音识别时必须挑选出真正在说话的部分，而排除掉部分空腔和噪声的干扰，以提高算法的识别效率，该做法成为**端点检测**。提炼出的信号经过Mel滤波提取出MFCC特征后使用DTW进行距离判决，取出所有判决中距离最小的作为输出。
 

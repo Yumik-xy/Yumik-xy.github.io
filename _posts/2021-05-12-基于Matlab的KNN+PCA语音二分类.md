@@ -18,7 +18,7 @@ PCA也称“主元分析”，主要用于数据降维，类似**最优有损压
 
 对一个二维数据，找到一条直线使所有数据距离线的距离之和最短，该线称为**最佳投影线**，此时该点到原点连成的线段在线上投影的距离“最长”（即到原点的距离一定，到直线距离最短，因此在直线上的投影最长），即可以保留最多的有效信息。
 
-<img src="https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210512233141.png" alt="image-20210512233141030"  />
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234051.png" alt="image-20210512233141030"  />
 
 ### KNN简要介绍
 
@@ -28,7 +28,7 @@ KNN称“K邻近算法”，主要用于判据数据属于哪一分类
 
  对于一组数据，现将其分成A、B两组。现在有一未知节点，为寻找其组别，算法会寻早其距离最近的K个节点，若K节点中A组节点数>B组节点数，则节点归为A组，反之同理。
 
-<img src="https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210512233808.png" alt="image-20210512233808658"  />
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234059.png" alt="image-20210512233808658"  />
 
 ### 识别过程
 
@@ -226,10 +226,10 @@ out = '当mu=1，k=128时，错误率为：0%'
 
 μ和k的关系如下图，不难看出当k取1时，μ值已经达到0.7~0.75之间，这是由于特征值向量中有一向量占比很大，其体现了数据的**主要判决准则**
 
-<img src="https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210513082417.png" alt="image-20210513082417477" style="zoom:67%;" />
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234111.png" alt="image-20210513082417477" style="zoom:67%;" />
 
 下图给出了训练集和测试集在不同μ的取值下，所展现的投影长度分布如下，红色部分为需要警告的部分，可以看出其被较好的分离出来
 
-<img src="https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210513082543.png" alt="image-20210513082543621" style="zoom:67%;" />
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234116.png" alt="image-20210513082543621" style="zoom:67%;" />
 
-<img src="https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210513082549.png" alt="image-20210513082549545" style="zoom:67%;" />
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234559.png" alt="image-20210513082549545" style="zoom:67%;" />

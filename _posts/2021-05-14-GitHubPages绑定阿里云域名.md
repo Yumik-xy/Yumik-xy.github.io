@@ -33,23 +33,23 @@ tag:
 
 访问 [阿里域名注册](https://wanwang.aliyun.com/) 网站，选购自己喜欢的域名，查询域名相关信息
 
-![image-20210515134726815](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210515134733.png)
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515235412.png" alt="image-20210515134726815" style="zoom: 67%;" />
 
 这里建议选择`.top`域名，加入清单并购买
 
-![image-20210515134836035](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210515134836.png)
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210516000352.png" alt="image-20210515134836035" style="zoom: 67%;" />
 
 购买中要注意选择域名的持有者为`个人`并配置属于自己的`信息模板`，依据配置信息完整配置好自己的相关信息，在购买域名后阿里会帮助我们进行域名申请，这个过程据说会持续3-5天，但实际上只需要5-10min即可审核完成
 
-![image-20210515135045431](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210515135045.png)
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210516000359.png" alt="image-20210515135045431" style="zoom:67%;" />
 
 申请完成后即可在个人`搜索`中直接搜索`域名`找到自己的域名信息，这里给出的是我之前申请的博客地址，域名状态显示为正常后即可
 
-![image-20210515135458294](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210515135458.png)
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210516000403.png" alt="image-20210515135458294" style="zoom:67%;" />
 
 点击`解析`即可看到当前域名已经可以被正确解析
 
-<img src="https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210515135637.png" alt="image-20210515135637818" style="zoom:67%;" />
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210516000406.png" alt="image-20210515135637818" style="zoom:67%;" />
 
 ### 申请免费SSL
 
@@ -57,7 +57,7 @@ tag:
 
 同样`搜索`关于`SSL`信息，进入到如下界面中
 
-![image-20210515135911781](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210515135911.png)
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210516000410.png" alt="image-20210515135911781" style="zoom:67%;" />
 
 点击立即购买，即可购买20份`DIgicert 免费单域名证书`
 
@@ -71,17 +71,17 @@ tag:
 
 购买完成后点击`创建证书`并点击`证书申请`，在申请页面中填写自己刚刚申请到的域名信息，其中`域名验证方式`选择手工DNS验证即可
 
-![image-20210515140224377](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210515140224.png)
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210516000415.png" alt="image-20210515140224377" style="zoom:67%;" />
 
 点击下一步，在验证信息中获取到了如下信息
 
-![image-20210515140419808](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210515140419.png)
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210516001939.png" alt="image-20210515140419808" style="zoom:67%;" />
 
 
 
 回到之前的`域名解析页面`选择添加记录，并按上图配置自己的信息
 
-![image-20210515140610856](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210515140610.png)
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210516001935.png" alt="image-20210515140610856" style="zoom: 67%;" />
 
 配置完成后点击验证，等待SSL证书验证通过后，你的网站即拥有了免费的SSL证书，可以通过HTTPS进行访问
 
@@ -89,7 +89,7 @@ tag:
 
 同样在域名管理页面添加两条**CNAME**信息，其记录值是你在GitHub Pages配置的博客的访问地址		
 
-![image-20210515140731041](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210515140731.png)
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210516001206.png" alt="image-20210515140731041" style="zoom:67%;" />
 
 其中首位的www/@称为主机记录，主机记录就是域名前缀，官方提供用法如下：
 
@@ -107,6 +107,6 @@ tag:
 
 在Custom domain中填写你购买的域名地址保存，并勾选`Enforce HTTPS`
 
-![image-20210515141135901](https://raw.githubusercontent.com/Yumik-xy/blogImage/main/img/20210515141135.png)
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210516001200.png" alt="image-20210515141135901" style="zoom:67%;" />
 
 接下来就是等待约5-10分钟，等待DNS同步完成后即可通过新的域名访问你的博客啦~
