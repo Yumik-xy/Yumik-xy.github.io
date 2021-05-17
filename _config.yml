@@ -60,3 +60,4 @@ plugins:
 #  - jekyll-feed
 
 markdown: kramdown
+permalink: /:title /github-pages
