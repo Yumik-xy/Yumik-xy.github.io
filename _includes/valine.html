@@ -5,6 +5,10 @@
 		el: '#vcomments',
 		appId: '{{ site.valine_comments.leancloud_appid }}',
 		appKey: '{{ site.valine_comments.leancloud_appkey }}',
-		placeholder:'留下你的想法吧~'
+		placeholder: '留下你的想法吧~',
+		meta: ['nick'],
+		requiredFields: ['nick'],
+		recordIP: true,
+		enableQQ: true
 	})
 </script>
