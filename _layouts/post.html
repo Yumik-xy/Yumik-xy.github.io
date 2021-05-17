@@ -19,7 +19,6 @@ layout: default
   <div class="post">
     {{ content }}
   </div>
-  <div id="vcomments"></div>
   </div>
 
   {%- if site.plainwhite.disqus_shortname -%}
@@ -40,3 +39,8 @@ layout: default
       powered by Disqus.</a></noscript>
   {%- endif -%}
 </div>
+<!-- Valine 评论框 -->
+{%- if site.valine_comments.enable -%}
+  {%- include valine.html -%}
+{%- endif -%}
+<!-- Valine 评论框 -->
