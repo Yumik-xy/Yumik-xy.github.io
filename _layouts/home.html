@@ -24,9 +24,9 @@ layout: default
     </li>
 
     {%- for post in site.posts -%}
-		{* if post.top != true or post.show == false  *}
-			{* continue *}
-		{* endif *}
+		{%- if post.top != true or post.show == false  -%}
+			{%- continue -%}
+		{%- endif -%}
       <li>
         {%- assign date_format = site.plainwhite.date_format | default: "%b %-d, %Y" -%}
         <a class="post-link" href="{{ post.url | relative_url }}">
@@ -54,9 +54,9 @@ layout: default
     {%- endfor -%}
 	
 	{%- for post in site.posts -%}
-		{* if post.top == true or post.show == false *}
-			{* continue *}
-		{* endif *}
+		{%- if post.top == true or post.show == false  -%}
+			{%- continue -%}
+		{%- endif -%}
       <li>
         {%- assign date_format = site.plainwhite.date_format | default: "%b %-d, %Y" -%}
         <a class="post-link" href="{{ post.url | relative_url }}">
