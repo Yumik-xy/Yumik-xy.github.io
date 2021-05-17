@@ -1,12 +1,12 @@
-{%- if page.comments != false -%}
+{%- site.valine_comments.enable == true -%}
+	<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+	<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
 	<div id="vcomments"></div>
 	<script>
 		new Valine({
 			el: '#vcomments',
-			appId: 'B6RRqjhz3CTUhjM249rD0eWw-gzGzoHsz',
-			appKey: 'O7I97Uk3CzgO8uLMGmBPL4IG',
-			notify:true,
-			path: '{{ page.url }}',
+			appId: '{{ site.valine_comments.leancloud_appid }}',
+			appKey: '{{ site.valine_comments.leancloud_appkey }}',
 			placeholder:'留下你的想法吧~'
 		})
 	</script>

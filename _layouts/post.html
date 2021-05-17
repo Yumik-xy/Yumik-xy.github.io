@@ -19,6 +19,11 @@ layout: default
   <div class="post">
     {{ content }}
   </div>
+  
+  {%- if page.comments != false -%}
+	{%- include valine.html -%}
+  {%- endif -%}
+  
   {%- if site.plainwhite.disqus_shortname -%}
   <div id="disqus_thread" style="margin-top:25px"></div>
   <script>
@@ -33,11 +38,6 @@ layout: default
       (d.head || d.body).appendChild(s);
     })();
   </script>
-  
-  {%- if site.intensedebate_comments -%}
-      {%- include valine.html -%}
-  {%- endif -%}
-  
   <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
       powered by Disqus.</a></noscript>
   {%- endif -%}

@@ -62,4 +62,7 @@ plugins:
 markdown: kramdown
 permalink: /:categories/:title
 
-intensedebate_comments: true
+valine_comments:
+  enable: true
+  leancloud_appid: B6RRqjhz3CTUhjM249rD0eWw-gzGzoHsz
+  leancloud_appkey: O7I97Uk3CzgO8uLMGmBPL4IG
