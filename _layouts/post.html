@@ -19,10 +19,15 @@ layout: default
   <div class="post">
     {{ content }}
   </div>
-  </div>
+  <!-- Valine 评论框 -->
+  {%- if site.valine_comments.enable -%}
+    {%- include valine.html -%}
+  {%- endif -%}
+  <!-- Valine 评论框 -->
+</div>
 
-  {%- if site.plainwhite.disqus_shortname -%}
-  <div id="disqus_thread" style="margin-top:25px"></div>
+{%- if site.plainwhite.disqus_shortname -%}
+<div id="disqus_thread" style="margin-top:25px"></div>
   <script>
     var disqus_config = function () {
       this.page.url = '{{ page.url | absolute_url }}';
@@ -38,10 +43,4 @@ layout: default
   <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
       powered by Disqus.</a></noscript>
   {%- endif -%}
-  
-  <!-- Valine 评论框 -->
-  {%- if site.valine_comments.enable -%}
-    {%- include valine.html -%}
-  {%- endif -%}
-  <!-- Valine 评论框 -->
 </div>
