@@ -58,3 +58,8 @@ plainwhite:
 plugins:
   - jekyll-seo-tag
 #  - jekyll-feed
+
+markdown: kramdown
+kramdown:
+  input:  GFM
+  use_coderay: true
