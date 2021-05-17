@@ -1,4 +1,5 @@
 {%- site.valine_comments.enable == true -%}
+	<div id="vcomments"></div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/valine/1.4.14/Valine.min.js"></script>
 	<script>
 		new Valine({
@@ -6,6 +7,6 @@
 			appId: '{{ site.valine_comments.leancloud_appid }}',
 			appKey: '{{ site.valine_comments.leancloud_appkey }}',
 			placeholder:'留下你的想法吧~'
-		})
+		});
 	</script>
 {%- endif -%}
