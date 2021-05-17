@@ -21,7 +21,8 @@ layout: default
   </div>
   
   {%- if page.comments != false -%}
-	{%- include valine.html -%}
+	<div id="vcomments">
+	</div>
   {%- endif -%}
   
   {%- if site.plainwhite.disqus_shortname -%}

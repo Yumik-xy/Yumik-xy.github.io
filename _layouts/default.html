@@ -3,12 +3,13 @@
 
 <head>
   {%- include head.html -%}
+  {%- include valine.html -%}
 </head>
 
 {%- if site.plainwhite.condensed_mobile contains page.layout -%}
-{% assign condensed_class = "condensed" %}
+	{% assign condensed_class = "condensed" %}
 {% else %}
-{% assign condensed_class = "" %}
+	{% assign condensed_class = "" %}
 {%- endif -%}
 
 <body>
