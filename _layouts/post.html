@@ -38,9 +38,10 @@ layout: default
   <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
       powered by Disqus.</a></noscript>
   {%- endif -%}
+  
+  <!-- Valine 评论框 -->
+  {%- if site.valine_comments.enable -%}
+    {%- include valine.html -%}
+  {%- endif -%}
+  <!-- Valine 评论框 -->
 </div>
-<!-- Valine 评论框 -->
-{%- if site.valine_comments.enable -%}
-  {%- include valine.html -%}
-{%- endif -%}
-<!-- Valine 评论框 -->
