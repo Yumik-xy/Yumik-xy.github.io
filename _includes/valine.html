@@ -1,0 +1,13 @@
+{%- if page.comments != false -%}
+	<div id="vcomments"></div>
+	<script>
+		new Valine({
+			el: '#vcomments',
+			appId: 'B6RRqjhz3CTUhjM249rD0eWw-gzGzoHsz',
+			appKey: 'O7I97Uk3CzgO8uLMGmBPL4IG',
+			notify:true,
+			path: '{{ page.url }}',
+			placeholder:'留下你的想法吧~'
+		})
+	</script>
+{%- endif -%}
