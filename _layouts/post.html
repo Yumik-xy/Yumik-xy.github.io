@@ -19,6 +19,10 @@ layout: default
   <div class="post">
     {{ content }}
   </div>
+
+  {%- if page.comments != false -%}
+	<div id="vcomments"></div>
+  {%- endif -%}
  
   {%- if site.plainwhite.disqus_shortname -%}
   <div id="disqus_thread" style="margin-top:25px"></div>
