@@ -133,7 +133,13 @@ onstart()的调用意味着Activity**已经对用户可见**，应用会**一致
 
 ### Activity启动模式
 
-#### 默认模式standard
+定义启动模式有两种方式：
+
+#### 使用清单文件
+
+可以直接在AndroidManifest.xml文件中声明
+
+##### 默认模式standard
 
 在这个模式下，每一次创建Activity都会创建一个新的实例，该实例会执行完整的生命周期
 
@@ -146,11 +152,8 @@ onstart()的调用意味着Activity**已经对用户可见**，应用会**一致
 | 创建Activity A |    [A]    |
 | 创建Activity A |  [A, A]   |
 | 创建Activity B | [A, A, B] |
-|    按下Back    |  [A, A]   |
-|    按下Back    |    [A]    |
-|    按下Back    |    []     |
 
-#### 单一实例模式singleTask
+##### 单一实例模式singleTask
 
 该模式允许一个task中运行多个实例，但是同一个Activity只能被创建一次
 
@@ -166,18 +169,16 @@ onstart()的调用意味着Activity**已经对用户可见**，应用会**一致
 | 创建Activity A |  [A]   |
 | 创建Activity B | [A, B] |
 | 创建Activity A | [B, A] |
-|    按下Back    |  [B]   |
-|    按下Back    |   []   |
 
-#### 单一栈顶模式singleTop
+##### 单一栈顶模式singleTop
 
 该模式允许一个task中运行多个实例，允许同一个Activity创建多次，但是不能「叠加」
 
-若该Activity不存在或Activity存在且不在栈顶，将会正常创建Activity
+- 若该Activity不为栈顶（不存在或存在但不为栈顶实例）：将会正常创建Activity
 
-若该Activity存在且在栈顶，则会执行该Activity的onNewIntent()方法
+- 若该Activity为栈顶：则会调用该Activity的onNewIntent()方法，并将对应的intent参数传递给该实例，而不会创建一个新的实例
 
-🌰例子：
+🌰例子：Activity A和B都是singleTop模式
 
 |      操作      |  task栈   |
 | :------------: | :-------: |
@@ -185,13 +186,12 @@ onstart()的调用意味着Activity**已经对用户可见**，应用会**一致
 | 创建Activity A |    [A]    |
 | 创建Activity B |  [A, B]   |
 | 创建Activity A | [A, B, A] |
-|    按下Back    |  [A, B]   |
-|    按下Back    |    [A]    |
-|    按下Back    |    []     |
 
-#### 单一实例模式singleInstance
+##### 单一实例模式singleInstance
 
-该模式要求一个task中只能存在一个Activity的Instance实例
+该模式要求一个Task中只能存在一个Activity的Instance实例
+
+该模式一般用于拉起登录界面。系统会默认响应主Task，所以即使创建了一个新的Task，但是从桌面点击应用图标进入时仍然会调起主Task
 
 🌰例子：(B声明为单一实例模式)
 
@@ -203,6 +203,24 @@ onstart()的调用意味着Activity**已经对用户可见**，应用会**一致
 |    按下Back    |     [A]      |   [B]   |
 |    按下Back    | [] (栈A销毁) |   [B]   |
 |    按下Back    |      []      |   []    |
+
+#### 使用Intent标记
+
+在调用「startActivity()」时通过intent传递一个启动模式标记
+
+##### FLAG_ACTIVITY_NEW_TASK
+
+该模式与「singleTask」模式一致，如果启动的Activity已经存在，则会把该实例转到前台并恢复最后的状态
+
+##### FLAG_ACTIVITY_SINGLE_TOP
+
+该模式与「singleTop」模式一致，如果启动的Activity已经时栈顶实例，则会调用onNewIntent()方法，而不会创建新的实例
+
+##### FLAG_ACTIVITY_CLEAR_TOP
+
+如果启动的Activity已经存在，这回销毁该实例上方的所有其他实例，使得该实例恢复到栈顶位置
+
+该标记通常和FLAG_ACTIVITY_SINGLE_TOP标记共同使用，保证只启动一个实例的同时，对栈顶元素传递intent信息
 
 ### 生命周期实例
 
@@ -220,7 +238,24 @@ onstart()的调用意味着Activity**已经对用户可见**，应用会**一致
 
 无论是竖屏切换到横屏还是反之，都会执行完整的生命周期
 
+结合使用ViewModels和onSaveInstanceState()方法或其他持久化方法可以保持页面数据
+
 onPause() -> onStop() -> onDestroy() -> onCreate() -> onStart() -> onResume()
+
+#### 多窗口切换时的生命周期
+
+当应用为Android7.0以上支持多窗口时，对分屏窗口的不同进程A和B切换时若从窗口B切换到窗口A，生命周期如下：
+
+1. B中Activity的onPause()执行
+2. A中的Activity的onResume()执行
+
+注意，并不会进入到onStop状态
+
+#### Activity或对话框显示在前台的生命周期
+
+若有新的Activity或对话框显示在前台，但是并没有完全覆盖上一个Activity时，被覆盖的实例会**只进入onPause状态**，但其重新回归前台获取焦点时，也只需要调用onResume()
+
+若新的Activity完全覆盖住了上一个Activity，则被覆盖的实例会依次进入onPause和onStop状态。再次回归前台则需要调用onRestart()、onStart()、onResume()
 
 #### 手机锁屏时的生命周期
 
@@ -234,3 +269,8 @@ onPause() -> onStop() -> onDestroy() -> onCreate() -> onStart() -> onResume()
 1. 切换到桌面：onPause() -> onStop()
 2. 切换回应用：onRestart() -> onStart() -> onResume()
 
+*可以把切换桌面等价于一个Activity显示在前台，完全覆盖了上一个Activity的行为*
+
+#### 用户按下”返回“按钮的生命周期
+
+考虑到用户按下「返回」按钮意味着不在想回到当前Activity中，因此不会触发onSaveInstanceState()回调，而是直接顺序进入到onDestroy状态，但也可以在onBackPressed()方法中对返回按钮实现某些的自定义行为
