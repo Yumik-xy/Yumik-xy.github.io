@@ -16,7 +16,7 @@ Fragment是界面中可以重复使用的一部分，其可以独立管理自己
 
 Fragment可以很方便的进行模块化开发，通过模块间的不同布局方式以适应不同的设备，例如Google给出的版本图例
 
-<img src="https://developer.android.google.cn/images/guide/fragments/fragment-screen-sizes.png" style="zoom:67%;" />
+<img src="https://developer.android.google.cn/images/guide/fragments/fragment-screen-sizes.png" style="zoom:40%;" />
 
 我们可以在Activity的生命周期中监测屏幕的状态变化或设备大小，以调整使用不同的Fragment或调整组件的布局方式
 
@@ -69,7 +69,7 @@ FragmentManager类负责管理Fragment的一系列操作，即上述所说的动
 
 下图清晰的阐明了Fragment于其管理器之间的关系
 
-<img src="https://developer.android.google.cn/images/guide/fragments/manager-mappings.png" alt="FragmentManager获取示例" style="zoom:67%;" />
+<img src="https://developer.android.google.cn/images/guide/fragments/manager-mappings.png" alt="FragmentManager获取示例" style="zoom: 40%;" />
 
 #### FragmentManager的使用
 
