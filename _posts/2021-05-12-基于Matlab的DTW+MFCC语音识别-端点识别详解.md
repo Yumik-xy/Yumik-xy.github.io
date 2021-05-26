@@ -2,8 +2,8 @@
 layout: post
 title:  "基于MATLAB的DTW+MFCC语音识别-端点识别详解"
 date:   2021-05-12 14:22:00 +0800
-categories: MATLAB
-tag: MATLAB语音识别
+categories: 语音识别
+tag: MATLAB
 ---
 
 * content

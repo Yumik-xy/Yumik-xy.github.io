@@ -126,7 +126,7 @@ fragmentManager.commit {
 
 Fragment的生命周期和Activity的生命周期类似，都包含了onCreate()、onStart()、onResume()、onPause()、onStop()和onDestroy()
 
-<img src="https://developer.android.com/images/fragment_lifecycle.png" alt="img" style="zoom: 80%;" />
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210523134039.png" alt="fragment_lifecycle" style="zoom:80%;" />
 
 下图给出了Fragment和View的生命周期状态
 

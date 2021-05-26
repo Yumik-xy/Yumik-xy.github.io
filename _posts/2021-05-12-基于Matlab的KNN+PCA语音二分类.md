@@ -2,8 +2,8 @@
 layout: post
 title: 基于Matlab的KNN+PCA语音二分类
 date: 2021-05-12 23:06:47 +0800
-categories: MATLAB
-tag: MATLAB语音识别
+categories: 语音识别
+tag: MATLAB
 ---
 
 * content
