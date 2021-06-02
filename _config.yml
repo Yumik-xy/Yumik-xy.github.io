@@ -60,7 +60,7 @@ plugins:
 #  - jekyll-feed
 
 markdown: kramdown
-# permalink: /:categories/:title
+permalink: /:categories/:title
 
 valine_comments:
   enable: true
