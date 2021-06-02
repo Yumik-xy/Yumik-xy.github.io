@@ -62,7 +62,7 @@ end
 
 函数首先对所有数据进行归一化操作，将数据进行0点对齐使得所有数据和为0，这样是为了更好的做PCA运算，归一化公式为
 
-![](https://latex.codecogs.com/gif.latex?x^*=\frac{x-\mu}{\sigma})
+$x^*=\frac{x-\mu}{\sigma}$
 
 函数如下：
 
@@ -76,7 +76,7 @@ end
 
 进行归一化后将8000bit语音信号进行分帧，分帧数通过公式
 
-![](https://latex.codecogs.com/gif.latex?fn=\frac{N-wlen}{inc}/+1)
+$fn=\frac{N-wlen}{inc}/+1$
 
 进行计算。取分帧长度为800帧，帧移为400，计算可得需要分成19帧，帧与帧之间通过Hamming码进行连接，分帧函数如下：
 
@@ -139,11 +139,11 @@ end
 
 得到训练集的特征向量数组后，经过PCA算法进行降维，将9维数据降成1维数据，计算步骤如下：
 
-1. 对协方差矩阵![](https://latex.codecogs.com/gif.latex?\Sigma_X)写出行列式：![](https://latex.codecogs.com/gif.latex?%7C\Sigma_x-\lambda E%7C)
+1. 对协方差矩阵$\Sigma_X$写出行列式：$\|\Sigma_x-\lambda E\|$
 
-2. 令![](https://latex.codecogs.com/gif.latex?%7C\Sigma_x-\lambda E%7C=0)，得到的![](https://latex.codecogs.com/gif.latex?\lambda_1),![](https://latex.codecogs.com/gif.latex?\lambda_2)...![](https://latex.codecogs.com/gif.latex?\lambda_n)就是协方差矩阵![](https://latex.codecogs.com/gif.latex?\Sigma_x)的特征值
+2. 令$\|\Sigma_x-\lambda E\|=0$，得到的$\lambda_1,\lambda_2,\cdots,\lambda_n$就是协方差矩阵$\Sigma_x$的特征值
 
-3. 将![](https://latex.codecogs.com/gif.latex?\lambda=\lambda_i)带入![](https://latex.codecogs.com/gif.latex?%7C\Sigma_x-\lambda E%7C=0)，解出的基础解系![](https://latex.codecogs.com/gif.latex?v_1),![](https://latex.codecogs.com/gif.latex?v_2)...![](https://latex.codecogs.com/gif.latex?v_n)就是协方差矩阵![](https://latex.codecogs.com/gif.latex?\Sigma_x)就是该特征值对应的特征向量。
+3. 将$\lambda=\lambda_i$带入，$\|\Sigma_x-\lambda E\|=0$，解出的基础解系就是$v_1,v_2,\cdots,v_n$协方差矩阵$\Sigma_x$就是该特征值对应的特征向量。
 
 ```matlab
 function [principal_eigenvector, i] = principal_eigenvector(data,mu)
