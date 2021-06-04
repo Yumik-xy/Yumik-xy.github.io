@@ -8,7 +8,7 @@ tag: MATLAB
 
 * content
 {:toc}
-KNN+PCA实现电力系统正常/故障二分类处理
+**山东大学 语音信号处理**期末课程作业“KNN+PCA实现电力系统正常/故障二分类处理”。本实验通过MFCC对环境声音信息进行特征抽样提取，对MFCC数据信息进行PCA降维处理，并使用KNN进行二分类进行正常/故障声音信息判决操作，其识别率近乎可以达到100%
 
 ### PCA简要介绍
 
@@ -19,6 +19,8 @@ PCA也称“主元分析”，主要用于数据降维，类似**最优有损压
 对一个二维数据，找到一条直线使所有数据距离线的距离之和最短，该线称为**最佳投影线**，此时该点到原点连成的线段在线上投影的距离“最长”（即到原点的距离一定，到直线距离最短，因此在直线上的投影最长），即可以保留最多的有效信息。
 
 <img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234051.png" alt="image-20210512233141030"  />
+
+同样拓展到高$N$维空间数据也可以通过PCA进行$N-1$维降维进行数据压缩，这样可以大幅度减少计算复杂度，提高计算效率
 
 ### KNN简要介绍
 
@@ -46,7 +48,7 @@ train_lable = (train_lable - 1.5)*2;
 
 #### 训练集数据进行预处理
 
-对所有的数据进行特征值选择，并保存在选择后的矩阵中。
+对所有的数据进行特征值选择，并保存在选择后的矩阵中
 
 ```matlab
 for i = 1:train_wav_length
@@ -76,14 +78,14 @@ end
 
 进行归一化后将8000bit语音信号进行分帧，分帧数通过公式
 
-$fn=\frac{N-wlen}{inc}/+1$
+$fn=\frac{N-wlen}{inc}+1=\frac{8000-800}{400}+1=19$
 
 进行计算。取分帧长度为800帧，帧移为400，计算可得需要分成19帧，帧与帧之间通过Hamming码进行连接，分帧函数如下：
 
 ```matlab
 function f=enframe(data,win,inc)
-    nx=length(data);
-    nwin=length(win);
+    nx=length(data); % 数据长度
+    nwin=length(win); % 窗函数，这里使用Hamming窗
     if (nwin == 1)
        len = win;
     else
@@ -92,14 +94,14 @@ function f=enframe(data,win,inc)
     if (nargin < 3)
        inc = len;
     end
-    nf = fix((nx-len+inc)/inc);
+    nf = fix((nx-len+inc)/inc); % 分帧数，公式即上面给出的
     f=zeros(nf,len);
     indf= inc*(0:(nf-1)).';
     inds = (1:len);
-    f(:) = data(indf(:,ones(1,len))+inds(ones(nf,1),:));
+    f(:) = data(indf(:,ones(1,len))+inds(ones(nf,1),:)); % 分帧
     if (nwin > 1)
         w = win(:)';
-        f = f .* w(ones(nf,1),:);
+        f = f .* w(ones(nf,1),:); % 加窗
     end
 end
 ```
@@ -137,21 +139,21 @@ end
 
 #### 计算特征值的特征向量
 
-得到训练集的特征向量数组后，经过PCA算法进行降维，将9维数据降成1维数据，计算步骤如下：
+得到训练集的特征向量数组后，经过PCA算法进行降维，将171维数据进行降维，降维后维度根据给出的数据精度$\mu$进行动态计算，计算步骤如下：
 
 1. 对协方差矩阵$\Sigma_X$写出行列式：$\|\Sigma_x-\lambda E\|$
-
-2. 令$\|\Sigma_x-\lambda E\|=0$，得到的$\lambda_1,\lambda_2,\cdots,\lambda_n$就是协方差矩阵$\Sigma_x$的特征值
-
+2. 令$\|\Sigma_x-\lambda E\|=0$，得到的$\lambda_1,\lambda_2,\cdots,\lambda_n$就是协方差矩阵$\Sigma_x$的特征值（即奇异值分解）
 3. 将$\lambda=\lambda_i$带入，$\|\Sigma_x-\lambda E\|=0$，解出的基础解系就是$v_1,v_2,\cdots,v_n$协方差矩阵$\Sigma_x$就是该特征值对应的特征向量。
+4. 根据定义，主元1应该匹配奇异值最大的解系，主元n对应分第n大的解系，因此对特征向量从大到小进行排序
+5. 根据数据精度$\mu=\frac{\sum_{i=0}^{k}(v_i)}{\sum_{i=0}^{n}(v_i)}$，计算得到的特征方向向量的维度k，即PCA降维的维度为k维
 
 ```matlab
 function [principal_eigenvector, i] = principal_eigenvector(data,mu)
     [row, ~] = size(data);
     mean_data = mean(data);
     ajust_data = data - repmat(mean_data,row,1);
-    ajust_data = ajust_data';
-    cov_data = ajust_data*ajust_data'/(size(ajust_data,1)-1);
+    ajust_data = ajust_data'; % 计算零点归一化数据
+    cov_data = ajust_data*ajust_data'/(size(ajust_data,1)-1); % 求数据的自相关矩阵
         
     [v, d] = eig(cov_data);
     v_sort = zeros(size(v));
@@ -174,23 +176,24 @@ end
 
 由KNN邻近算法的定义可知，现在需要找n个距离目标节点最近的点，根据其包含的正常/异常类的数量推导出目标节点的类型。
 
-上一步我们先求出了归一化直线的特征向量，我们现在可以求解出训练集和测试集每一点到该向量方向的投影坐标，通过坐标值计算出即可计算测试集的某个点到所有训练集点的距离，找出距离最小的n个点，和这n个点的数据类型即可判决该点属于哪一类。
+上一步我们先求出了归一化直线的**特征向量**，我们现在可以求解出训练集和测试集每一点到该向量方向的投影坐标，通过坐标值计算出即可计算测试集的某个点到所有训练集点的距离，找出距离最小的n个点，和这n个点的数据即可判决该点属于哪一类。
 
 本次实验去knn的n值为3，当求解diff大于1时，判决为异常类；小于1时判决为正常类，这是由于我们预先对数据标签进行了[-1,1]的处理，即正常用-1表示，异常用1表示，只要求解出几个点的标签和，即可知道其距离内包含的哪种类型的点更多。
 
 ```matlab
 knn = 3;
 
-[train_vector, k] = principal_eigenvector(train_selection_wav,mu(mu_i));
+[train_vector, k] = principal_eigenvector(train_selection_wav,mu(mu_i)); % 计算得到特征向量
+
 train_selection_mean = mean(train_selection_wav); % 归0化训练集
 train_len = (train_selection_wav - repmat(train_selection_mean,train_wav_length,1)) * train_vector; % 求训练集矢量
 
-test_selection_mean = mean(train_selection_wav);
+test_selection_mean = mean(train_selection_wav); % 归0化测试集
 test_len = (test_selection_wav - repmat(test_selection_mean,test_wav_length,1)) * train_vector; % 求测试集矢量
     
 diff = zeros(test_wav_length,1); % 计算第k个目标节点的差异值
 for i = 1:test_wav_length
-    test_wav = test_len(i);
+    test_wav = test_len(i); % 取出测试集距离
     dvalue_len = abs(train_len-repmat(test_len(i),train_wav_length,1)); % 计算距离最小的值
     [svalue_len,n] = sort(dvalue_len);
     for j = 1:knn
@@ -228,8 +231,14 @@ out = '当mu=1，k=128时，错误率为：0%'
 
 <img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234111.png" alt="image-20210513082417477" style="zoom:67%;" />
 
-下图给出了训练集和测试集在不同μ的取值下，所展现的投影长度分布如下，红色部分为需要警告的部分，可以看出其被较好的分离出来
+下图给出了训练集和测试集在不同μ的取值下，所展现的投影长度分布如下，红色部分为需要警告的部分，可以看出其被较好的分离出来，该实验取得了较好的成功！
 
 <img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234116.png" alt="image-20210513082543621" style="zoom:67%;" />
 
 <img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234559.png" alt="image-20210513082549545" style="zoom:67%;" />
+
+### 参考文献
+
+1. [语音识别的技术原理是什么？](https://www.zhihu.com/question/20398418/answer/18080841)
+2. [如何通俗易懂地讲解什么是 PCA 主成分分析](https://www.zhihu.com/question/41120789/answer/481966094)
+3. [深入浅出KNN算法（一） 介绍篇](https://zhuanlan.zhihu.com/p/61341071)
