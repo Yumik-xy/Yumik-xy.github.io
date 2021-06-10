@@ -10,6 +10,14 @@ tag: MATLAB
 {:toc}
 **山东大学 语音信号处理**期末课程作业“KNN+PCA实现电力系统正常/故障二分类处理”。本实验通过MFCC对环境声音信息进行特征抽样提取，对MFCC数据信息进行PCA降维处理，并使用KNN进行二分类进行正常/故障声音信息判决操作，其识别率近乎可以达到100%
 
+### 实验目的
+
+机器运行正常与否，一般人可以通过分辨机器运行的声音来判决。
+
+**但是**，我们不可能一直守在机器旁保证机器正常工作，因此基于语音识别的一种语音二分类判决被提出，通过其他设备对音频进行读取分析，判断机器工作状况
+
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210606100854.png!small" alt="image-20210606100854217" style="zoom:67%;" />
+
 ### PCA简要介绍
 
 PCA也称“主元分析”，主要用于数据降维，类似**最优有损压缩**方法
@@ -209,7 +217,7 @@ out = ['当mu=' num2str(mu(mu_i)) '，k=' num2str(k) '时，错误率为：' num
 
 ```
 
-#### 实验结果分析
+### 实验结果分析
 
 判决结果如下：
 
@@ -229,13 +237,13 @@ out = '当mu=1，k=128时，错误率为：0%'
 
 μ和k的关系如下图，不难看出当k取1时，μ值已经达到0.7~0.75之间，这是由于特征值向量中有一向量占比很大，其体现了数据的**主要判决准则**
 
-<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234111.png" alt="image-20210513082417477" style="zoom:67%;" />
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210606100743.png!small" alt="img" style="zoom:67%;" />
 
 下图给出了训练集和测试集在不同μ的取值下，所展现的投影长度分布如下，红色部分为需要警告的部分，可以看出其被较好的分离出来，该实验取得了较好的成功！
 
-<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234116.png" alt="image-20210513082543621" style="zoom:67%;" />
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234116.png!small" alt="image-20210513082543621" style="zoom:67%;" />
 
-<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234559.png" alt="image-20210513082549545" style="zoom:67%;" />
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515234559.png!small" alt="image-20210513082549545" style="zoom:67%;" />
 
 ### 参考文献
 
