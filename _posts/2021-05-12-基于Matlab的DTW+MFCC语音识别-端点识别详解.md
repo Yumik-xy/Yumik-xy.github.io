@@ -14,13 +14,15 @@ tag: MATLAB
 
 一个人的语音信号一般是由浊音、清音和爆破音构成。其中浊音是气流通过一开一闭口产生的**周期性振动的声音**，而清音则是气流通过声带狭长部位产生的类似**白噪声的声音**，而爆破音就是爆发而出，气体快速通过的声音。而浊音和清音包含了大部分的元音和辅音字母，因此一般使用浊音激励和清音激励构建语音信号模型。
 
-不考虑模型的实际架构，我们对于一个录制的语音信号
+不考虑模型的实际架构，我们对于一个录制的语音信号（后备箱关）的信号波形如下：
 
-<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210515230906.png" alt="image-20210512143931597" style="zoom:67%;" />
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210611224528.png!small" alt="all_audio_data" style="zoom:67%;" />
 
 其存在不包含任何信息的[0]段空腔和人呼吸或环境产生的噪声。在语音识别时必须挑选出真正在说话的部分，而排除掉部分空腔和噪声的干扰，以提高算法的识别效率，该做法成为**端点检测**。提炼出的信号经过Mel滤波提取出MFCC特征后使用DTW进行距离判决，取出所有判决中距离最小的作为输出。
 
-训练函数中包含了不同词长度的训练集，采用16000Hz录制，内容包含“后备箱”、“打开”、“关闭”、“开”、“关”，经过优质的端点识别提取后的语音信号有极高的识别率，但是也可以发现该方法对端点识别依赖很高，端点识别中阈值的设定又对提取结果产生很大变化，故该方法还有很大改进空间。
+训练函数中包含了不同词长度的训练集，采用16000Hz录制，**内容包含「打、开、关、闭、后、备、箱」的7个孤立词**，每个训练词包含了两个训练样本
+
+经过端点识别提取后的语音信号有极高的识别率，但是也可以发现该方法对端点识别依赖很高，端点识别中阈值的设定又对提取结果产生很大变化，故该方法还有很大改进空间。
 
 ### 端点检测实现
 
@@ -164,8 +166,55 @@ end
 end
 ```
 
+这里对声音提取函数进行了修改，使得每次只提取出消息信号的一段，这一段可以理解为一个**独立的词**
+
+```matlab
+function [endPointFitter, m] = calEndPointFitter(data,endPointDetect,m)
+% 去重
+endPointDetect = reshape(endPointDetect,2,[])';
+endPointDetect = unique(endPointDetect,'rows')';
+endPointDetect = reshape(endPointDetect,1,[]);
+frame = 256;
+endPointFitter = [];
+% m = 1;
+if m < length(endPointDetect)
+    endPointFitter = [endPointFitter;data(endPointDetect(m)*frame:endPointDetect(m+1)*frame)];
+end
+if m + 2 < length(endPointDetect)
+    m = m + 2;
+else
+    m = -1;
+end
+end
+```
+
+对于题头给出的声音波形（后备箱关）
+
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210611224528.png!small" alt="all_audio_data" style="zoom:67%;" />
+
+我们可以通过`for循环`拆分成如下的四个声音讯号，这四个分别代表了「后、备、箱、关」（左到右、上到下）的四段波形，因为这里没有使用最小的音素作为判据，所以每个词之间必须保留一定的间隔，用于拆分。
+
+<img src="https://yumik-xy.oss-cn-qingdao.aliyuncs.com/img/20210611225255.png!small" alt="each" style="zoom:67%;" />
+
+通过拆分出来的四个词，分别对其进行判据，即可得到最终的判决输出
+
+```matlab
+ans = name: '后-1.wav'
+ans = name: '备-1.wav'
+ans = name: '箱-2.wav'
+ans = name: '关-2.wav'
+```
+
+但是在完整的HMM+GMM识别中还有「语义识别」即最后输出的词连接成的句子也应该满足一定的规则，但是在这里也没有考虑了
+
 ### MFCC特征及DTW识别
 
 MFCC特征及DTW识别为常规的MATLAB算法实现，这里不做赘述。
 
 值得提出的是，MFCC的一阶和二阶系数又称为微分系数和加速度系数。在MFCC只是描述了一帧语音上的能量谱包络，但是语音信号似乎有一些动态上的信息，也就是MFCC随着时间的改变而改变的轨迹。有证明说计算MFCC轨迹并把它们加到原始特征中可以提高语音识别的表现。**但是实际使用时发现不使用时有更高的解析正确率，暂未分析明其原因**。
+
+### 实验总结
+
+本次实验中主要通过了端点检测，对输入的语音信号进行了过零点和能量分割，使得每一个词作为一个判据，能更好的提高判决准确度。在实际的HMM语音识别中，应该还是根据音素进行判断，通过划分到每一个发应，然后判决其组成词语的概率，再判决这些词组成句子的概率来输出最有可能的结果
+
+本实验由于个人对于MATLAB的实现能力不够无法实现，但是仍然有效的完成了孤立词识别，并且取得了较好的成效
