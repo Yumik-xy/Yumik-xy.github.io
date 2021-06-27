@@ -339,3 +339,62 @@ img {
     display: block;
     margin: 0 auto;
 }
+
+code {
+  padding: 0 3px;
+  margin: 0 3px;
+  color: rgb(221, 17, 68); 
+  background-color:rgb(245, 245, 245); 
+  border: 1px solid rgb(221, 221, 221); 
+  border-radius: 4px;
+}
+
+/* 字体大小微调 */
+.info-panel-tab-title {
+  font-size: 1.18em;
+}
+#file-library {
+  font-size: 1.12em;
+}
+#outline-content {
+  font-size: 1.06em;
+}
+
+/* 列表的上下边距 */
+li .mathjax-block, li p {
+  margin: .2rem 0
+}
+
+/* 一行文字的上下边距 */
+p, blockquote, ul, ol, dl, table {
+  margin: 0rem 0
+}
+
+/* 各级标题设置 */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.7rem;
+  margin-bottom: 0.3rem;
+}
+h1 {
+  font-size: 1.75em;
+  line-height: 1.225;
+  margin-top: 2.5em;
+  border-bottom: 1px solid #eee;
+  color: #D05;
+}
+h5 {
+  color: #2E66FF;
+  font-size: 1.1em;
+}
+
+
+/* 语法高亮相关 */
+.cm-s-inner .cm-comment {
+  color: #008000;
+}
+.cm-s-inner .cm-string {
+  color: #a31515;
+}
+.cm-s-inner .cm-keyword {
+  color: #ee0066;
+}
