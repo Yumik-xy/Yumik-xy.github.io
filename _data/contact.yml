@@ -1,0 +1,17 @@
+- type: github
+  icon: "fab fa-github"
+  url: "https://github.com/Yumik-xy"
+
+# - type: twitter
+#   icon: "fab fa-twitter"
+#   url: ""
+
+# - type: email
+#   icon: "fas fa-envelope"
+#   noblank: true
+#   url: "mailto:your-email@example.com"
+
+- type: rss
+  icon: "fas fa-rss"
+  noblank: true
+  url: ""

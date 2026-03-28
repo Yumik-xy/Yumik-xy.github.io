@@ -1,0 +1,153 @@
+# ==========================================
+# 站点基本信息
+# ==========================================
+theme: jekyll-theme-chirpy
+
+title: Yumik's Blog                # 站点标题
+tagline: 分享技术、学习与思考        # 副标题，显示在侧边栏
+description: >-                     # SEO 描述
+  分享技术、学习与思考的个人博客。
+url: "https://yumik-xy.github.io"
+baseurl: ""
+
+lang: zh-CN
+timezone: Asia/Shanghai
+
+# ==========================================
+# 作者信息
+# ==========================================
+social:
+  name: Yumik
+  # email: your-email@example.com
+  links:
+    - https://github.com/Yumik-xy
+
+github:
+  username: Yumik-xy
+
+# twitter:
+#   username:
+
+# ==========================================
+# 外观
+# ==========================================
+# 主题模式: light / dark / 留空则跟随系统
+theme_mode:
+
+# 侧边栏头像（替换为你的头像路径）
+avatar: https://github.com/Yumik-xy.png
+
+# 全局目录开关
+toc: true
+
+# ==========================================
+# 评论系统（取消注释启用）
+# ==========================================
+comments:
+  # provider: giscus        # 可选: disqus / utterances / giscus
+  # giscus:
+  #   repo:                  # GitHub 仓库 (owner/repo)
+  #   repo_id:
+  #   category: General
+  #   category_id:
+  #   mapping: pathname
+  #   lang: zh-CN
+
+# ==========================================
+# 统计分析（取消注释启用）
+# ==========================================
+# analytics:
+#   google:
+#     id:                    # Google Analytics ID
+
+# ==========================================
+# 搜索引擎验证
+# ==========================================
+# webmaster_verifications:
+#   google:
+#   bing:
+#   baidu:
+
+# ==========================================
+# 永久链接
+# ==========================================
+permalink: /posts/:title/
+
+# ==========================================
+# 分页
+# ==========================================
+paginate: 10
+
+# ==========================================
+# Markdown 渲染
+# ==========================================
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: highlight
+    span:
+      line_numbers: false
+    block:
+      line_numbers: true
+      start_line: 1
+
+# ==========================================
+# 文章默认值
+# ==========================================
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      comments: true
+      toc: true
+      math: true
+      mermaid: true
+      permalink: /posts/:title/
+  - scope:
+      path: _tabs
+    values:
+      layout: page
+      permalink: /:title/
+
+# ==========================================
+# SAss
+# ==========================================
+sass:
+  style: compressed
+
+# ==========================================
+# 集合
+# ==========================================
+collections:
+  tabs:
+    output: true
+    sort_by: order
+
+# ==========================================
+# 归档
+# ==========================================
+jekyll-archives:
+  enabled: [categories, tags]
+  layouts:
+    category: category
+    tag: tag
+  permalinks:
+    tag: /tags/:name/
+    category: /categories/:name/
+
+# ==========================================
+# 排除
+# ==========================================
+exclude:
+  - "*.gem"
+  - "*.gemspec"
+  - docs
+  - tools
+  - README.md
+  - LICENSE
+  - Gemfile.lock
+  - .obsidian
+  - "*.Rhistory"
