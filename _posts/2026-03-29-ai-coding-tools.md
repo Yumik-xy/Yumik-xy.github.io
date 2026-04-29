@@ -5,8 +5,6 @@ categories:
   - AI
 tags:
   - AI
-  - 工具
-  - Claude Code
 ---
 
 > 本文完全由 AI 生成，持续更新中。记录在 AI 辅助编码过程中好用的工具和框架。
