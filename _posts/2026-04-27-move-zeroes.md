@@ -37,7 +37,7 @@ tags:
 首先想到最基础的冒泡，即遍历相邻的两个数字，如果前继继数字是0后继不是0，则交换这两个数字。
 
 **实现代码：**
-```C++
+```cpp
 
 class Solution {
 public:
@@ -91,7 +91,8 @@ public:
 
 **实现代码：**
 
-```kotlin
+```cpp
+
 class Solution {
 public:
     void moveZeroes(vector<int>& nums) {
@@ -107,6 +108,7 @@ public:
         }
     }
 };
+
 ```
 
 **执行结果：**

@@ -92,7 +92,7 @@ fast_index = 4
 
 **实现代码：**
 
-```C++
+```cpp
 
 class Solution {
 public:
