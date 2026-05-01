@@ -83,6 +83,10 @@ paginate: 10
 # ==========================================
 kramdown:
   input: GFM
+  hard_wrap: false              # 单换行不转 <br>，对中文友好
+  footnote_nr: 1                # 脚注起始编号
+  auto_ids: true                # 标题自动生成 id（锚点跳转）
+  smart_quotes: lsquo,rsquo,ldquo,rdquo  # 智能引号
   syntax_highlighter: rouge
   syntax_highlighter_opts:
     css_class: highlight
@@ -91,6 +95,17 @@ kramdown:
     block:
       line_numbers: true
       start_line: 1
+
+# ==========================================
+# 插件
+# ==========================================
+plugins:
+  - jemoji              # :smile: → 😄
+  - jekyll-mentions     # @user → GitHub 链接
+
+# @mentions 指向 GitHub
+jekyll-mentions:
+  base_url: https://github.com
 
 # ==========================================
 # 文章默认值
